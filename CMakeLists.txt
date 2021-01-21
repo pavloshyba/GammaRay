@@ -345,22 +345,9 @@ endif()
 #
 # Finding Qt
 #
-find_package(Qt6Core 6.0 NO_MODULE)
-if (TARGET Qt6::Core)
-    message("Qt6 found!")
-    set(_qt_main_package Qt6)
-    find_package(Qt6Core 6.0 NO_MODULE REQUIRED)
-    set_package_properties(Qt6Core PROPERTIES TYPE REQUIRED)
-    add_definitions(-DGAMMARAY_QT6_TODO)
-else()
-    message("Qt5 found!")
-    set(_qt_main_package Qt5)
-    find_package(Qt5Core 5.5 NO_MODULE REQUIRED)
-    set_package_properties(Qt5Core PROPERTIES TYPE REQUIRED)
-endif()
-
-find_package(${_qt_main_package} NO_MODULE REQUIRED COMPONENTS Gui Network)
-find_package(${_qt_main_package} NO_MODULE QUIET OPTIONAL_COMPONENTS
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} 5.5.0 NO_MODULE REQUIRED COMPONENTS Gui Network)
+find_package(Qt${QT_VERSION_MAJOR} 5.5.0 NO_MODULE QUIET OPTIONAL_COMPONENTS
   3DAnimation
   3DExtras
   3DInput
@@ -385,13 +372,16 @@ find_package(${_qt_main_package} NO_MODULE QUIET OPTIONAL_COMPONENTS
   Widgets
   WaylandCompositor
 )
+if (TARGET Qt6::Core)
+ add_definitions(-DGAMMARAY_QT6_TODO)
+endif ()
 
 # Find these 'exotic' Qt modules without using find_package(... COMPONENTS)
 # so we can retrieve those packages even when installed into a different prefix
-find_package(Qt5IviCore 1.1 NO_MODULE QUIET) # 1.1 is based on 5.8
-find_package(Qt5IviVehicleFunctions 1.1 NO_MODULE QUIET)
-find_package(Qt5IviMedia 1.1 NO_MODULE QUIET)
-find_package(Qt5Scxml 5.8 NO_MODULE QUIET)
+find_package(Qt${QT_VERSION_MAJOR}IviCore 1.1 NO_MODULE QUIET) # 1.1 is based on 5.8
+find_package(Qt${QT_VERSION_MAJOR}IviVehicleFunctions 1.1 NO_MODULE QUIET)
+find_package(Qt${QT_VERSION_MAJOR}IviMedia 1.1 NO_MODULE QUIET)
+find_package(Qt${QT_VERSION_MAJOR}Scxml 5.8 NO_MODULE QUIET)
 
 # if translation/doc host tools are missing, the Qt5 cmake config files throw errors...
 if(GAMMARAY_BUILD_DOCS)
@@ -430,7 +420,7 @@ if(QtCore_VERSION VERSION_GREATER 5.7)
 endif()
 
 if(GAMMARAY_BUILD_UI) # widgets are required for the UI
-  find_package(Qt5 NO_MODULE REQUIRED COMPONENTS Widgets)
+  find_package(Qt${QT_VERSION_MAJOR} NO_MODULE REQUIRED COMPONENTS Widgets)
   # 3D Widget inspector requires Qt3D 5.7
   if(QtCore_VERSION VERSION_EQUAL 5.7 OR QtCore_VERSION VERSION_GREATER 5.7)
     if(${Qt53DRender_FOUND} AND ${Qt53DInput_FOUND} AND ${Qt53DLogic_FOUND} AND ${Qt53DQuick_FOUND})
