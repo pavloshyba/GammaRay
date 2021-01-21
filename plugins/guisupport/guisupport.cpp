@@ -90,10 +90,12 @@ Q_DECLARE_METATYPE(QFlags<Qt::MouseEventFlag>)
 Q_DECLARE_METATYPE(QTouchEvent::TouchPoint)
 Q_DECLARE_METATYPE(QList<QTouchEvent::TouchPoint>)
 Q_DECLARE_METATYPE(Qt::TouchPointState)
+#ifndef GAMMARAY_QT6_TODO
 Q_DECLARE_METATYPE(QFlags<QTouchEvent::TouchPoint::InfoFlag>)
 Q_DECLARE_METATYPE(QFlags<QTouchDevice::CapabilityFlag>)
 Q_DECLARE_METATYPE(QTouchDevice*)
 Q_DECLARE_METATYPE(const QTouchDevice*)
+#endif
 Q_DECLARE_METATYPE(QScrollEvent::ScrollState)
 Q_DECLARE_METATYPE(QList<QInputMethodEvent::Attribute>)
 Q_DECLARE_METATYPE(QContextMenuEvent::Reason)
@@ -579,8 +581,11 @@ void GuiSupport::registerMetaTypes()
     MO_ADD_PROPERTY_RO(QTouchEvent, device);
     MO_ADD_PROPERTY_RO(QTouchEvent, target);
     MO_ADD_PROPERTY_RO(QTouchEvent, touchPoints);
+#ifndef GAMMARAY_QT6_TODO
     MO_ADD_PROPERTY_RO(QTouchEvent, window);
+#endif
 
+#ifndef GAMMARAY_QT6_TODO
     MO_ADD_METAOBJECT0(QTouchEvent::TouchPoint);
     MO_ADD_PROPERTY_RO(QTouchEvent::TouchPoint, id);
     MO_ADD_PROPERTY_RO(QTouchEvent::TouchPoint, state);
@@ -603,11 +608,14 @@ void GuiSupport::registerMetaTypes()
     MO_ADD_PROPERTY_RO(QTouchEvent::TouchPoint, ellipseDiameters);
 #endif
 
+#ifndef GAMMARAY_QT6_TODO
     MO_ADD_METAOBJECT0(QTouchDevice);
     MO_ADD_PROPERTY_RO(QTouchDevice, capabilities);
     MO_ADD_PROPERTY_RO(QTouchDevice, maximumTouchPoints);
     MO_ADD_PROPERTY_RO(QTouchDevice, name);
     MO_ADD_PROPERTY_RO(QTouchDevice, type);
+#endif
+#endif
 
     MO_ADD_METAOBJECT1(QScrollPrepareEvent, QEvent);
     MO_ADD_PROPERTY_RO(QScrollPrepareEvent, startPos);
@@ -975,6 +983,7 @@ static const MetaEnum::Value<QPixelFormat::YUVLayout> pixelformat_yuvlayout_tabl
 };
 #undef E
 
+#ifndef GAMMARAY_QT6_TODO
 #define E(x) { QTouchEvent::TouchPoint:: x, #x }
 static const MetaEnum::Value<QTouchEvent::TouchPoint::InfoFlags> touch_point_info_flag_table[] = {
     E(Pen),
@@ -995,6 +1004,7 @@ static const MetaEnum::Value<QTouchDevice::Capabilities> touch_device_capabiliti
     E(MouseEmulation)
 };
 #undef E
+#endif
 
 static QString brushToString(const QBrush &b)
 {
@@ -1104,8 +1114,10 @@ void GuiSupport::registerVariantHandler()
     ER_REGISTER_ENUM(QPixelFormat, TypeInterpretation, pixelformat_typeinterpretation_table);
     ER_REGISTER_ENUM(QPixelFormat, YUVLayout, pixelformat_yuvlayout_table);
 
+#ifndef GAMMARAY_QT6_TODO
     ER_REGISTER_FLAGS(QTouchEvent::TouchPoint, InfoFlags, touch_point_info_flag_table);
     ER_REGISTER_FLAGS(QTouchDevice, Capabilities, touch_device_capabilitites_flag_table);
+#endif
 }
 
 QObject *GuiSupport::targetObject(QObject *object) const
