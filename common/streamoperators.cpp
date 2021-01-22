@@ -58,13 +58,13 @@ void StreamOperators::registerOperators()
     StreamOperators::registerOperators<QHash<int, QByteArray> >();
 
     StreamOperators::registerOperators<ObjectId>();
-#ifndef GAMMARAY_QT6_TODO
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     // This is needed so QVariant based comparison works (ie: QAIM::match)
     QMetaType::registerComparators<ObjectId>();
 #endif
 
     StreamOperators::registerOperators<ObjectIds>();
-#ifndef GAMMARAY_QT6_TODO
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     // This is needed so QVariant based comparison works (ie: QAIM::match)
     QMetaType::registerComparators<ObjectIds>();
 #endif
