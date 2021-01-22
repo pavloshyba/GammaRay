@@ -385,7 +385,7 @@ find_package(Qt${QT_VERSION_MAJOR}Scxml 5.8 NO_MODULE QUIET)
 
 # if translation/doc host tools are missing, the Qt5 cmake config files throw errors...
 if(GAMMARAY_BUILD_DOCS)
-  find_package(Qt5 NO_MODULE QUIET OPTIONAL_COMPONENTS Help LinguistTools)
+  find_package(Qt${QT_VERSION_MAJOR} NO_MODULE QUIET OPTIONAL_COMPONENTS Help LinguistTools)
 endif()
 
 # these need to included after the last Qt-related find_package() call
@@ -457,11 +457,11 @@ endif()
 add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050500)
 #add_definitions(-DQT_DEPRECATED_WARNINGS)
 
-set_package_properties(Qt5 PROPERTIES URL "https://qt.io/")
-set_package_properties(Qt5Concurrent PROPERTIES TYPE RECOMMENDED PURPOSE "Required for the GammaRay launcher process list.")
-set_package_properties(Qt5Widget PROPERTIES TYPE RECOMMENDED PURPOSE "Required for the GammaRay client UI and widget-related tools.")
-set_package_properties(Qt5Svg PROPERTIES TYPE OPTIONAL PURPOSE "Required for widget SVG export.")
-set_package_properties(Qt5PrintSupport PROPERTIES TYPE OPTIONAL PURPOSE "Required for widget PDF export.")
+set_package_properties(Qt${QT_VERSION_MAJOR} PROPERTIES URL "https://qt.io/")
+set_package_properties(Qt${QT_VERSION_MAJOR}Concurrent PROPERTIES TYPE RECOMMENDED PURPOSE "Required for the GammaRay launcher process list.")
+set_package_properties(Qt${QT_VERSION_MAJOR}Widget PROPERTIES TYPE RECOMMENDED PURPOSE "Required for the GammaRay client UI and widget-related tools.")
+set_package_properties(Qt${QT_VERSION_MAJOR}Svg PROPERTIES TYPE OPTIONAL PURPOSE "Required for widget SVG export.")
+set_package_properties(Qt${QT_VERSION_MAJOR}PrintSupport PROPERTIES TYPE OPTIONAL PURPOSE "Required for widget PDF export.")
 
 # debug suffixes for qmake compatibility
 if(WIN32)
