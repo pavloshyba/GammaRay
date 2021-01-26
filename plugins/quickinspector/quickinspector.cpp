@@ -338,7 +338,9 @@ void RenderModeRequest::apply()
         const QByteArray mode = renderModeToString(RenderModeRequest::mode);
         QQuickWindowPrivate *winPriv = QQuickWindowPrivate::get(window);
         QMetaObject::invokeMethod(window, "cleanupSceneGraph", Qt::DirectConnection);
-#ifndef GAMMARAY_QT6_TODO
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        winPriv->visualizationMode = mode;
+#else
         winPriv->customRenderMode = mode;
 #endif
         emit sceneGraphCleanedUp();
@@ -458,15 +460,17 @@ void QuickInspector::selectWindow(QQuickWindow *window)
     }
 
     if (m_window) {
-#ifndef GAMMARAY_QT6_TODO
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        const QByteArray mode = QQuickWindowPrivate::get(m_window)->visualizationMode;
+#else
         const QByteArray mode = QQuickWindowPrivate::get(m_window)->customRenderMode;
+#endif
 
         if (!mode.isEmpty()) {
             auto reset = new RenderModeRequest(m_window);
             connect(reset, &RenderModeRequest::finished, reset, &RenderModeRequest::deleteLater);
             reset->applyOrDelay(m_window, QuickInspectorInterface::NormalRendering);
         }
-#endif
     }
 
     m_window = window;
