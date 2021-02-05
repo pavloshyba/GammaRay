@@ -269,6 +269,7 @@ endmacro()
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
+set(CMAKE_CXX_STANDARD 17)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_flag_if_supported(-Wunused-but-set-variable UNUSED_BUT_SET)
@@ -344,11 +345,22 @@ endif()
 #
 # Finding Qt
 #
-find_package(Qt5Core 5.5 NO_MODULE REQUIRED)
+find_package(Qt6Core 6.0 NO_MODULE)
+if (TARGET Qt6::Core)
+    message("Qt6 found!")
+    set(_qt_main_package Qt6)
+    find_package(Qt6Core 6.0 NO_MODULE REQUIRED)
+    set_package_properties(Qt6Core PROPERTIES TYPE REQUIRED)
+    add_definitions(-DGAMMARAY_QT6_TODO)
+else()
+    message("Qt5 found!")
+    set(_qt_main_package Qt5)
+    find_package(Qt5Core 5.5 NO_MODULE REQUIRED)
+    set_package_properties(Qt5Core PROPERTIES TYPE REQUIRED)
+endif()
 
-set_package_properties(Qt5Core PROPERTIES TYPE REQUIRED)
-find_package(Qt5 NO_MODULE REQUIRED COMPONENTS Gui Network)
-find_package(Qt5 NO_MODULE QUIET OPTIONAL_COMPONENTS
+find_package(${_qt_main_package} NO_MODULE REQUIRED COMPONENTS Gui Network)
+find_package(${_qt_main_package} NO_MODULE QUIET OPTIONAL_COMPONENTS
   3DAnimation
   3DExtras
   3DInput
